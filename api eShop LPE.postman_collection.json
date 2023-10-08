@@ -1,0 +1,166 @@
+{
+	"info": {
+		"_postman_id": "9c55d593-97a0-418e-b29e-6e910c2ff49b",
+		"name": "proj joao",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10292792"
+	},
+	"item": [
+		{
+			"name": "get diretorios",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImVtYWlsIjoiam9yZ2ViYXZhcmVzY29AaWZzdWwuZWR1LmJyIiwibm9tZSI6IkpvcmdlIEJhdmFyZXNjbyIsInRpcG8iOiJBIiwidGVsZWZvbmUiOiIoNTQpOTk5ODQtNDM0OCIsInJvbGVzIjpbIkFERENBVEVHT1JJQSIsIlJFTU9WRUNBVEVHT1JJQSJdfSwiaWF0IjoxNjk2MzM0MzU3LCJleHAiOjE2OTYzMzQ2NTd9.4uTLUTeplXDl-_XGzuwyeMX3QVMYaX9SrEzWz-mP35k",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3002/diretorio",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"diretorio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add Diretorio",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImVtYWlsIjoiam9yZ2ViYXZhcmVzY29AaWZzdWwuZWR1LmJyIiwibm9tZSI6IkpvcmdlIEJhdmFyZXNjbyIsInRpcG8iOiJBIiwidGVsZWZvbmUiOiIoNTQpOTk5ODQtNDM0OCJ9LCJpYXQiOjE2OTYzMzM5NjMsImV4cCI6MTY5NjMzNDI2M30.I--9N-USDT13EMqJFUmjDTUoODpLbsK9DJlR-wdd20M",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\" : \"Informática\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3002/diretorio",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"diretorio"
+					],
+					"query": [
+						{
+							"key": "authorization",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "atualiza diretorio",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"codigo\": 7,\n        \"nome\": \"Informática teste\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3002/diretorio",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"diretorio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "diretorio por código",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3002/diretorio/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"diretorio",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete diretorio",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3002/diretorio/6",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"diretorio",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"email\" : \"jorgebavaresco@ifsul.edu.br\", \"senha\" : \"123456\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3002/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
