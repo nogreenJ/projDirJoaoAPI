@@ -3,6 +3,7 @@ class Diretorio {
         this.codigo = codigo;
         this.nome = nome;
         this.parent = parent;
+        this.usuario = usuario;
     }
 }
 
