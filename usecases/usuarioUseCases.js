@@ -4,7 +4,7 @@ const Usuario = require('../entities/usuario');
 const getUsuariosDB = async () => {
     try {
         const { rows } = await pool.query(`SELECT * FROM usuarios ORDER BY codigo`);
-        return rows.map((usuario) => new Usuario(usuario.codigo, usuario.nome, usuario.parent));
+        return rows.map((usuario) => new Usuario(usuario.codigo, usuario.email, usuario.tipo, usuario.nome));
     } catch (err) {
         throw "Erro: " + err;
     }
@@ -29,13 +29,13 @@ const updateUsuarioDB = async (body) => {
     try {
         const { codigo, nome } = body;
         const results = await pool.query(`UPDATE usuarios set nome = $2 where codigo = $1 
-        returning codigo, nome, parent`,
+        returning codigo, nome, tipo, email`,
             [codigo, nome]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser alterado`;
         }
         const usuario = results.rows[0];
-        return new Usuario(usuario.codigo, usuario.nome);
+        return new Usuario(usuario.codigo, usuario.email, usuario.tipo, usuario.nome);
     } catch (err) {
         throw "Erro ao alterar a usuario: " + err;
     }
@@ -63,7 +63,7 @@ const getUsuarioPorCodigoDB = async (codigo) => {
             throw "Nenhum registro encontrado com o código: " + codigo;
         } else {
             const usuario = results.rows[0];
-            return new Usuario(usuario.codigo, usuario.nome);
+            return new Usuario(usuario.codigo, usuario.email, usuario.tipo, usuario.nome);
         }
     } catch (err) {
         throw "Erro ao recuperar a usuario: " + err;
