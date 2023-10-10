@@ -63,7 +63,7 @@ const getUsuarioPorCodigoDB = async (codigo) => {
             throw "Nenhum registro encontrado com o código: " + codigo;
         } else {
             const usuario = results.rows[0];
-            return new Usuario(usuario.codigo, usuario.email, usuario.tipo, usuario.nome);
+            return new Usuario(usuario.codigo, usuario.email, usuario.tipo, usuario.nome, usuario.senha);
         }
     } catch (err) {
         throw "Erro ao recuperar a usuario: " + err;
