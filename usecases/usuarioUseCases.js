@@ -14,7 +14,7 @@ const addUsuarioDB = async (body) => {
     try {
         const { nome, email, tipo, senha } = body;
         const results = await pool.query(`INSERT INTO usuarios (nome, email, tipo, senha) 
-            VALUES ($1)
+            VALUES ($1, $2, $3, $4)
             returning codigo, nome, email, tipo`,
             [nome, email, tipo, senha]);
         const usuario = results.rows[0];
