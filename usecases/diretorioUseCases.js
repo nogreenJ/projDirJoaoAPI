@@ -3,7 +3,16 @@ const Diretorio = require('../entities/diretorio');
 
 const getDiretoriosDB = async () => {
     try {
-        const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY codigo`);
+        const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY parent, codigo`);
+        return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, diretorio.parent));
+    } catch (err) {
+        throw "Erro: " + err;
+    }
+}
+
+const getDiretoriosByUser = async (user) => {
+    try {
+        const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY parent, codigo where usuario = $1`, [user]);
         return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, diretorio.parent));
     } catch (err) {
         throw "Erro: " + err;
@@ -13,10 +22,10 @@ const getDiretoriosDB = async () => {
 const addDiretorioDB = async (body) => {
     try {
         const { nome } = body;
-        const results = await pool.query(`INSERT INTO diretorios (nome) 
-            VALUES ($1)
+        const results = await pool.query(`INSERT INTO diretorios (nome, parent, usuario) 
+            VALUES ($1, $2, $3)
             returning codigo, nome, parent, usuario`,
-            [nome]);
+            [nome, parent, usuario]);
         const diretorio = results.rows[0];
         return new Diretorio(diretorio.codigo, diretorio.nome, diretorio.parent);
     } catch (err) {
