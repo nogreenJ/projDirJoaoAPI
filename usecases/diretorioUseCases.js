@@ -4,7 +4,7 @@ const Diretorio = require('../entities/diretorio');
 const getDiretoriosDB = async () => {
     try {
         const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY parent, codigo`);
-        return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, diretorio.parent));
+        return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null)));
     } catch (err) {
         throw "Erro: " + err;
     }
@@ -13,7 +13,7 @@ const getDiretoriosDB = async () => {
 const getDiretoriosByUser = async (user) => {
     try {
         const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY parent, codigo where usuario = $1`, [user]);
-        return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, diretorio.parent));
+        return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null)));
     } catch (err) {
         throw "Erro: " + err;
     }
@@ -21,13 +21,13 @@ const getDiretoriosByUser = async (user) => {
 
 const addDiretorioDB = async (body) => {
     try {
-        const { nome } = body;
+        const { nome, parent, usuario } = body;
         const results = await pool.query(`INSERT INTO diretorios (nome, parent, usuario) 
             VALUES ($1, $2, $3)
             returning codigo, nome, parent, usuario`,
-            [nome, parent, usuario]);
+            [nome, (parent ? parent : null), usuario]);
         const diretorio = results.rows[0];
-        return new Diretorio(diretorio.codigo, diretorio.nome, diretorio.parent);
+        return new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null));
     } catch (err) {
         throw "Erro ao inserir a diretorio: " + err;
     }
@@ -36,15 +36,15 @@ const addDiretorioDB = async (body) => {
 
 const updateDiretorioDB = async (body) => {
     try {
-        const { codigo, nome } = body;
-        const results = await pool.query(`UPDATE diretorios set nome = $2 where codigo = $1 
+        const { codigo, nome, parent } = body;
+        const results = await pool.query(`UPDATE diretorios set nome = $2, parent = $3 where codigo = $1 
         returning codigo, nome, parent, usuario`,
-            [codigo, nome]);
+            [codigo, nome, parent]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser alterado`;
         }
         const diretorio = results.rows[0];
-        return new Diretorio(diretorio.codigo, diretorio.nome);
+        return new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null));
     } catch (err) {
         throw "Erro ao alterar a diretorio: " + err;
     }
@@ -72,7 +72,7 @@ const getDiretorioPorCodigoDB = async (codigo) => {
             throw "Nenhum registro encontrado com o código: " + codigo;
         } else {
             const diretorio = results.rows[0];
-            return new Diretorio(diretorio.codigo, diretorio.nome);
+            return new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null));
         }
     } catch (err) {
         throw "Erro ao recuperar a diretorio: " + err;
