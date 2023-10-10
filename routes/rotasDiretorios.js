@@ -10,6 +10,9 @@ rotasDiretorios.route('/diretorio')
     .post(verificaJWT, addDiretorio)
     .put(verificaJWT, updateDiretorio)
 
+rotasDiretorios.route('/diretorio/:user')
+    .get(verificaJWT, getDiretorios)
+
 rotasDiretorios.route('/diretorio/:codigo')
     .get(verificaJWT, getDiretorioPorCodigo)
     .delete(verificaJWT, deleteDiretorio)
