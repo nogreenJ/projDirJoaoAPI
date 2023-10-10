@@ -12,13 +12,13 @@ const getUsuariosDB = async () => {
 
 const addUsuarioDB = async (body) => {
     try {
-        const { nome } = body;
-        const results = await pool.query(`INSERT INTO usuarios (nome) 
+        const { nome, email, tipo, senha } = body;
+        const results = await pool.query(`INSERT INTO usuarios (nome, email, tipo, senha) 
             VALUES ($1)
-            returning codigo, nome, parent`,
-            [nome]);
+            returning codigo, nome, email, tipo`,
+            [nome, email, tipo, senha]);
         const usuario = results.rows[0];
-        return new Usuario(usuario.codigo, usuario.nome, usuario.parent);
+        return new Usuario(usuario.codigo, usuario.email, usuario.tipo, usuario.nome);
     } catch (err) {
         throw "Erro ao inserir a usuario: " + err;
     }
