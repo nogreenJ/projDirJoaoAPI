@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const { getDiretorios, addDiretorio, updateDiretorio, deleteDiretorio, getDiretorioPorCodigo } = require('../controllers/diretorioController');
+const { getDiretorios, getDiretoriosByUser, addDiretorio, updateDiretorio, deleteDiretorio, getDiretorioPorCodigo } = require('../controllers/diretorioController');
 
 const { verificaJWT } = require('../controllers/segurancaController');
 const rotasDiretorios = new Router();
@@ -11,7 +11,7 @@ rotasDiretorios.route('/diretorio')
     .put(verificaJWT, updateDiretorio)
 
 rotasDiretorios.route('/diretorio/:user')
-    .get(verificaJWT, getDiretorios)
+    .get(verificaJWT, getDiretoriosByUser)
 
 rotasDiretorios.route('/diretorio/:codigo')
     .get(verificaJWT, getDiretorioPorCodigo)

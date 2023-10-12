@@ -21,11 +21,11 @@ const getDiretoriosByUser = async (user) => {
 
 const addDiretorioDB = async (body) => {
     try {
-        const { nome, parent, usuario } = body;
-        const results = await pool.query(`INSERT INTO diretorios (nome, parent, usuario) 
-            VALUES ($1, $2, $3)
+        const { codigo, nome, parent, usuario } = body;
+        const results = await pool.query(`INSERT INTO diretorios (codigo, nome, parent, usuario) 
+            VALUES ($1, $2, $3, $4)
             returning codigo, nome, parent, usuario`,
-            [nome, (parent ? parent : null), usuario]);
+            [codigo, nome, (parent ? parent : null), usuario]);
         const diretorio = results.rows[0];
         return new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null));
     } catch (err) {
@@ -80,5 +80,5 @@ const getDiretorioPorCodigoDB = async (codigo) => {
 }
 
 module.exports = {
-    getDiretoriosDB, addDiretorioDB, updateDiretorioDB, deleteDiretorioDB, getDiretorioPorCodigoDB
+    getDiretoriosDB, getDiretoriosByUser, addDiretorioDB, updateDiretorioDB, deleteDiretorioDB, getDiretorioPorCodigoDB
 }

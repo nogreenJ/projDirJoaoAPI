@@ -1,4 +1,4 @@
-const { getDiretoriosDB, addDiretorioDB,
+const { getDiretoriosDB, getDiretoriosByUser, addDiretorioDB,
     updateDiretorioDB, deleteDiretorioDB, getDiretorioPorCodigoDB }
     = require('../usecases/diretorioUseCases')
 
@@ -6,6 +6,17 @@ const getDiretorios = async (request, response) => {
     console.log('Usuario no getDiretorios' +
         JSON.stringify(request.usuario));
     await getDiretoriosDB()
+        .then(data => response.status(200).json(data))
+        .catch(err => response.status(400).json({
+            status: 'error',
+            message: 'Erro ao consultar as Diretorios: ' + err
+        }))
+}
+
+const getDiretoriosByUser = async (request, response) => {
+    console.log('Usuario no getDiretorios' +
+        JSON.stringify(request.usuario));
+    await getDiretoriosByUser()
         .then(data => response.status(200).json(data))
         .catch(err => response.status(400).json({
             status: 'error',
@@ -58,5 +69,5 @@ const getDiretorioPorCodigo = async (request, response) => {
 }
 
 module.exports = {
-    getDiretorios, addDiretorio, updateDiretorio, deleteDiretorio, getDiretorioPorCodigo
+    getDiretorios, getDiretoriosByUser, addDiretorio, updateDiretorio, deleteDiretorio, getDiretorioPorCodigo
 }
