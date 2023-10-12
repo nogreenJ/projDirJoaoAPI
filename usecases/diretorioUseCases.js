@@ -23,7 +23,7 @@ const addDiretorioDB = async (body) => {
     try {
         const { codigo, nome, usuario } = body;
         const results = await pool.query(`INSERT INTO diretorios (codigo, nome, usuario) 
-            VALUES ($1, $2, $3, $4)
+            VALUES ($1, $2, $3)
             returning codigo, nome, usuario`,
             [codigo, nome, usuario]);
         const diretorio = results.rows[0];
