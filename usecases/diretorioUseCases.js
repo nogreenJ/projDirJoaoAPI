@@ -22,10 +22,10 @@ const getDiretoriosByUserDB = async (user) => {
 const addDiretorioDB = async (body) => {
     try {
         const { codigo, nome, usuario } = body;
-        const results = await pool.query(`INSERT INTO diretorios (codigo, nome, usuario) 
-            VALUES ($1, $2, $3)
-            returning codigo, nome, usuario`,
-            [(codigo == "0" || codigo == 0 ? null : codigo), nome, usuario]);
+        const results = await pool.query(`INSERT INTO diretorios (nome, usuario) 
+            VALUES ($1, $2)
+            returning codigo, nome`,
+            [nome, usuario]);
         const diretorio = results.rows[0];
         return new Diretorio(diretorio.codigo, diretorio.nome);
     } catch (err) {
