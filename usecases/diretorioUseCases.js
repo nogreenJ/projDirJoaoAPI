@@ -21,13 +21,27 @@ const getDiretoriosByUserDB = async (user) => {
 
 const addDiretorioDB = async (body) => {
     try {
+        const { codigo, nome, usuario } = body;
+        const results = await pool.query(`INSERT INTO diretorios (codigo, nome, usuario) 
+            VALUES ($1, $2, $3, $4)
+            returning codigo, nome, usuario`,
+            [codigo, nome, usuario]);
+        const diretorio = results.rows[0];
+        return new Diretorio(diretorio.codigo, diretorio.nome);
+    } catch (err) {
+        throw "Erro ao inserir a diretorio: " + err;
+    }
+}
+
+const addSubDiretorioDB = async (body) => {
+    try {
         const { codigo, nome, parent, usuario } = body;
         const results = await pool.query(`INSERT INTO diretorios (codigo, nome, parent, usuario) 
             VALUES ($1, $2, $3, $4)
-            returning codigo, nome, parent, usuario`,
-            [codigo, nome, (parent ? parent : null), usuario]);
+            returning codigo, nome, usuario`,
+            [codigo, nome, parent, usuario]);
         const diretorio = results.rows[0];
-        return new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null));
+        return new Diretorio(diretorio.codigo, diretorio.nome);
     } catch (err) {
         throw "Erro ao inserir a diretorio: " + err;
     }
