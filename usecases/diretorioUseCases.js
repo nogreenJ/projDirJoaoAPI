@@ -12,7 +12,7 @@ const getDiretoriosDB = async () => {
 
 const getDiretoriosByUserDB = async (user) => {
     try {
-        const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY parent, codigo where usuario = $1`, [user]);
+        const { rows } = await pool.query(`SELECT * FROM diretorios where usuario = $1`, [user]);
         return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null)));
     } catch (err) {
         throw "Erro: " + err;
