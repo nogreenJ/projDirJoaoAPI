@@ -1,4 +1,4 @@
-const { getDiretoriosDB, getDiretoriosByUser, addDiretorioDB,
+const { getDiretoriosDB, getDiretoriosByUserDB, addDiretorioDB,
     updateDiretorioDB, deleteDiretorioDB, getDiretorioPorCodigoDB }
     = require('../usecases/diretorioUseCases')
 
@@ -16,7 +16,7 @@ const getDiretorios = async (request, response) => {
 const getDiretoriosByUser = async (request, response) => {
     console.log('Usuario no getDiretorios' +
         JSON.stringify(request.usuario));
-    await getDiretoriosByUser()
+    await getDiretoriosByUserDB()
         .then(data => response.status(200).json(data))
         .catch(err => response.status(400).json({
             status: 'error',

@@ -10,7 +10,7 @@ const getDiretoriosDB = async () => {
     }
 }
 
-const getDiretoriosByUser = async (user) => {
+const getDiretoriosByUserDB = async (user) => {
     try {
         const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY parent, codigo where usuario = $1`, [user]);
         return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null)));
@@ -80,5 +80,5 @@ const getDiretorioPorCodigoDB = async (codigo) => {
 }
 
 module.exports = {
-    getDiretoriosDB, getDiretoriosByUser, addDiretorioDB, updateDiretorioDB, deleteDiretorioDB, getDiretorioPorCodigoDB
+    getDiretoriosDB, getDiretoriosByUserDB, addDiretorioDB, updateDiretorioDB, deleteDiretorioDB, getDiretorioPorCodigoDB
 }
