@@ -1,19 +1,15 @@
 const { pool } = require('../config');
 const Diretorio = require('../entities/diretorio');
 
-const getDiretoriosDB = async () => {
+const getDiretoriosDB = async (codigo) => {
     try {
-        const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY parent, codigo`);
-        return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null)));
-    } catch (err) {
-        throw "Erro: " + err;
-    }
-}
-
-const getDiretoriosByUserDB = async (user) => {
-    try {
-        const { rows } = await pool.query(`SELECT * FROM diretorios where usuario = $1`, [user]);
-        return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null)));
+        if (codigo) {
+            const { rows } = await pool.query(`SELECT * FROM diretorios where usuario = $1 ORDER BY parent, codigo`, [codigo]);
+            return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null)));
+        } else {
+            const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY parent, codigo`);
+            return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null)));
+        }
     } catch (err) {
         throw "Erro: " + err;
     }
@@ -32,21 +28,6 @@ const addDiretorioDB = async (body) => {
         throw "Erro ao inserir a diretorio: " + err;
     }
 }
-
-const addSubDiretorioDB = async (body) => {
-    try {
-        const { codigo, nome, parent, usuario } = body;
-        const results = await pool.query(`INSERT INTO diretorios (codigo, nome, parent, usuario) 
-            VALUES ($1, $2, $3, $4)
-            returning codigo, nome, usuario`,
-            [codigo, nome, parent, usuario]);
-        const diretorio = results.rows[0];
-        return new Diretorio(diretorio.codigo, diretorio.nome);
-    } catch (err) {
-        throw "Erro ao inserir a diretorio: " + err;
-    }
-}
-
 
 const updateDiretorioDB = async (body) => {
     try {
@@ -94,5 +75,5 @@ const getDiretorioPorCodigoDB = async (codigo) => {
 }
 
 module.exports = {
-    getDiretoriosDB, getDiretoriosByUserDB, addDiretorioDB, updateDiretorioDB, deleteDiretorioDB, getDiretorioPorCodigoDB
+    getDiretoriosDB, addDiretorioDB, updateDiretorioDB, deleteDiretorioDB, getDiretorioPorCodigoDB
 }
