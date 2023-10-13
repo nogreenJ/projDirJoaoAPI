@@ -10,11 +10,9 @@ rotasDiretorios.route('/diretorio')
     .post(verificaJWT, addDiretorio)
     .put(verificaJWT, updateDiretorio)
 
-rotasDiretorios.route('/diretorio/:user')
-    .get(verificaJWT, getDiretoriosByUser)
-
 rotasDiretorios.route('/diretorio/:codigo')
     .get(verificaJWT, getDiretorioPorCodigo)
+    .post(verificaJWT, getDiretoriosByUser)
     .delete(verificaJWT, deleteDiretorio)
 
 module.exports = { rotasDiretorios };
