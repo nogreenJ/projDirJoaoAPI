@@ -4,11 +4,12 @@ const Diretorio = require('../entities/diretorio');
 const getDiretoriosDB = async (codigo) => {
     try {
         if (codigo) {
+            console.log('lol ' + codigo)
             const { rows } = await pool.query(`SELECT * FROM diretorios where usuario = $1 ORDER BY parent, codigo`, [codigo]);
-            return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null)));
+            return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, diretorio.parent ));
         } else {
             const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY parent, codigo`);
-            return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null)));
+            return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, diretorio.parent));
         }
     } catch (err) {
         throw "Erro: " + err;
