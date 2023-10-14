@@ -26,7 +26,6 @@ function verificaJWT(request, response, next) {
         if (err){
             response.status(401).json({auth : false , 
                 message : "Erro ao autenticar o token"})
-            console.log(err)
         } else {
             // se token é valido salva no request para uso posterior
             console.log('Usuario Token decodificado: ' + 
