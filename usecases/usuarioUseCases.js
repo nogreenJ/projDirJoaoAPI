@@ -13,10 +13,10 @@ const getUsuariosDB = async () => {
 const addUsuarioDB = async (body) => {
     try {
         const { nome, email, tipo, senha } = body;
-        const results = await pool.query(`INSERT INTO usuarios (nome, email, tipo, senha) 
-            VALUES ($1, $2, $3, $4)
+        const results = await pool.query(`INSERT INTO usuarios (nome, email, senha) 
+            VALUES ($1, $2, $3)
             returning codigo, nome, email, tipo`,
-            [nome, email, tipo, senha]);
+            [nome, email, senha]);
         const usuario = results.rows[0];
         return new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.tipo);
     } catch (err) {
@@ -28,9 +28,9 @@ const addUsuarioDB = async (body) => {
 const updateUsuarioDB = async (body) => {
     try {
         const { codigo, nome } = body;
-        const results = await pool.query(`UPDATE usuarios set nome = $2 where codigo = $1 
+        const results = await pool.query(`UPDATE usuarios set nome = $2, senha = $3 where codigo = $1 
         returning codigo, nome, tipo, email`,
-            [codigo, nome]);
+            [codigo, nome, senha]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser alterado`;
         }
