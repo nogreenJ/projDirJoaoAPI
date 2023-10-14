@@ -27,7 +27,7 @@ const addUsuarioDB = async (body) => {
 
 const updateUsuarioDB = async (body) => {
     try {
-        const { codigo, nome } = body;
+        const { codigo, nome, senha } = body;
         const results = await pool.query(`UPDATE usuarios set nome = $2, senha = $3 where codigo = $1 
         returning codigo, nome, tipo, email`,
             [codigo, nome, senha]);
