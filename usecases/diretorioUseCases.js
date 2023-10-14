@@ -6,10 +6,10 @@ const getDiretoriosDB = async (codigo) => {
         if (codigo) {
             console.log('lol ' + codigo)
             const { rows } = await pool.query(`SELECT * FROM diretorios where usuario = $1 ORDER BY codigo`, [codigo]);
-            return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome));
+            return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : '')));
         } else {
             const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY codigo`);
-            return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome));
+            return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : '')));
         }
     } catch (err) {
         throw "Erro: " + err;
@@ -24,9 +24,9 @@ const addDiretorioDB = async (body) => {
             returning codigo, nome`,
             [nome, usuario, parent]);
         const diretorio = results.rows[0];
-        return new Diretorio(diretorio.codigo, diretorio.nome);
+        return new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : ''));
     } catch (err) {
-        throw "Erro ao inserir a diretorio: " + err;
+        throw "Erro ao inserir o diretorio: " + err;
     }
 }
 
@@ -42,7 +42,7 @@ const updateDiretorioDB = async (body) => {
         const diretorio = results.rows[0];
         return new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : null));
     } catch (err) {
-        throw "Erro ao alterar a diretorio: " + err;
+        throw "Erro ao alterar o diretorio: " + err;
     }
 }
 
@@ -53,7 +53,7 @@ const deleteDiretorioDB = async (codigo) => {
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser removido`;
         } else {
-            return "Diretorio removida com sucesso";
+            return "Diretorio removido com sucesso";
         }
     } catch (err) {
         throw "Erro ao remover a diretorio: " + err;
@@ -68,7 +68,7 @@ const getDiretorioPorCodigoDB = async (codigo) => {
             throw "Nenhum registro encontrado com o código: " + codigo;
         } else {
             const diretorio = results.rows[0];
-            return new Diretorio(diretorio.codigo, diretorio.nome, diretorio.parent);
+            return new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : ''));
         }
     } catch (err) {
         throw "Erro ao recuperar a diretorio: " + err;
