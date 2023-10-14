@@ -47,8 +47,8 @@ const updateDiretorioDB = async (body) => {
 
 const deleteDiretorioDB = async (codigo) => {
     try {
-        const results = await pool.query(`DELETE FROM diretorios where codigo = $1`,
-            [codigo]);
+        const results = await pool.query(`DELETE FROM diretorios where codigo = $1 or parent = $2 `,
+            [codigo, codigo]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser removido`;
         } else {
