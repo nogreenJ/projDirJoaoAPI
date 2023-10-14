@@ -68,7 +68,7 @@ const getDiretorioPorCodigoDB = async (codigo) => {
             throw "Nenhum registro encontrado com o código: " + codigo;
         } else {
             const diretorio = results.rows[0];
-            return new Diretorio(diretorio.codigo, diretorio.nome);
+            return new Diretorio(diretorio.codigo, diretorio.nome, diretorio.parent);
         }
     } catch (err) {
         throw "Erro ao recuperar a diretorio: " + err;
