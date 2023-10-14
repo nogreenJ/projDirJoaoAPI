@@ -22,7 +22,7 @@ const addDiretorioDB = async (body) => {
         const results = await pool.query(`INSERT INTO diretorios (nome, usuario, parent) 
             VALUES ($1, $2, $3)
             returning codigo, nome`,
-            [nome, usuario, parent]);
+            [nome, usuario, (parent ? parent : null)]);
         const diretorio = results.rows[0];
         return new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : ''));
     } catch (err) {
@@ -35,7 +35,7 @@ const updateDiretorioDB = async (body) => {
         const { codigo, nome, parent } = body;
         const results = await pool.query(`UPDATE diretorios set nome = $2, parent = $3 where codigo = $1 
         returning codigo, nome, parent, usuario`,
-            [codigo, nome, parent]);
+            [codigo, nome, (parent ? parent : null)]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser alterado`;
         }
