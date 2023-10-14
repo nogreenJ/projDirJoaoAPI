@@ -19,8 +19,7 @@ const addDiretorioDB = async (body) => {
     try {
         const { nome, usuario, parent } = body;
         const results = await pool.query(`INSERT INTO diretorios (nome, usuario, parent) 
-            VALUES ($1, $2, $3)
-            returning codigo, nome`,
+            VALUES ($1, $2, $3) returning codigo, nome, parent`,
             [nome, usuario, (parent ? parent : null)]);
         const diretorio = results.rows[0];
         return new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : ''));
@@ -47,8 +46,7 @@ const updateDiretorioDB = async (body) => {
 
 const deleteDiretorioDB = async (codigo) => {
     try {
-        const results = await pool.query(`DELETE FROM diretorios where codigo = $1 or parent = $2 `,
-            [codigo, codigo]);
+        const results = await pool.query(`DELETE FROM diretorios where codigo = $1 `, [codigo]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser removido`;
         } else {
