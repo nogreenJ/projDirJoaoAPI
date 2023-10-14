@@ -43,8 +43,8 @@ const updateUsuarioDB = async (body) => {
 
 const deleteUsuarioDB = async (codigo) => {
     try {
-        const results = await pool.query(`DELETE FROM diretorios where usuario = $1;DELETE FROM usuarios where codigo = $1;`,
-            [codigo, codigo]);
+        await pool.query(`DELETE FROM diretorios where usuario = $1`, [codigo]);
+        const results = await pool.query(`DELETE FROM usuarios where codigo = $1;`, [codigo]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser removido`;
         } else {
