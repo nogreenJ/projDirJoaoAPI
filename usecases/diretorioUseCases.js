@@ -4,7 +4,6 @@ const Diretorio = require('../entities/diretorio');
 const getDiretoriosDB = async (codigo) => {
     try {
         if (codigo) {
-            console.log('lol ' + codigo)
             const { rows } = await pool.query(`SELECT * FROM diretorios where usuario = $1 ORDER BY codigo`, [codigo]);
             return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : '')));
         } else {
