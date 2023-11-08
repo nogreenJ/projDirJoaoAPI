@@ -20,7 +20,7 @@ const addUsuarioDB = async (body) => {
         const usuario = results.rows[0];
         return new Usuario(usuario.codigo, usuario.email, usuario.nome);
     } catch (err) {
-        throw "Erro ao inserir a usuario: " + err;
+        throw "Erro ao inserir o usuario: " + err;
     }
 }
 
@@ -43,15 +43,15 @@ const updateUsuarioDB = async (body) => {
 
 const deleteUsuarioDB = async (codigo) => {
     try {
-        const results = await pool.query(`DELETE FROM usuarios where codigo = $1`,
-            [codigo]);
+        await pool.query(`DELETE FROM diretorios where usuario = $1`, [codigo]);
+        const results = await pool.query(`DELETE FROM usuarios where codigo = $1;`, [codigo]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser removido`;
         } else {
-            return "Usuario removida com sucesso";
+            return "Usuario removido com sucesso";
         }
     } catch (err) {
-        throw "Erro ao remover a usuario: " + err;
+        throw "Erro ao remover o usuario: " + err;
     }
 }
 
@@ -66,7 +66,7 @@ const getUsuarioPorCodigoDB = async (codigo) => {
             return new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.senha);
         }
     } catch (err) {
-        throw "Erro ao recuperar a usuario: " + err;
+        throw "Erro ao recuperar o usuario: " + err;
     }
 }
 
