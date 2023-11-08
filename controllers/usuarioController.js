@@ -3,8 +3,6 @@ const { getUsuariosDB, addUsuarioDB,
     = require('../usecases/usuarioUseCases')
 
 const getUsuarios = async (request, response) => {
-    console.log('Usuario no getUsuarios' +
-        JSON.stringify(request.usuario));
     await getUsuariosDB()
         .then(data => response.status(200).json(data))
         .catch(err => response.status(400).json({
