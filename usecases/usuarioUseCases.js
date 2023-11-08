@@ -12,15 +12,16 @@ const getUsuariosDB = async () => {
 
 const addUsuarioDB = async (body) => {
     try {
-        console.log(body)
         const { nome, email, senha } = body;
-        console.log({ nome, email, senha })
+        if (!nome || !email || !senha) {
+            return { msg: "ERRO: dados faltando", status: 'error' };
+        }
         const results = await pool.query(`INSERT INTO usuarios (nome, email, senha) 
             VALUES ($1, $2, $3)
             returning codigo, nome, email`,
             [nome, email, senha]);
         const usuario = results.rows[0];
-        return new Usuario(usuario.codigo, usuario.email, usuario.nome);
+        return { msg: "Usuário cadastrado", obj: new Usuario(usuario.codigo, usuario.email, usuario.nome), status: 'success' };
     } catch (err) {
         throw "Erro ao inserir o usuario: " + err;
     }

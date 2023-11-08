@@ -6,8 +6,8 @@ const rotasUsuarios = new Router();
 
 rotasUsuarios.route('/usuario')
     .get(verificaJWT, getUsuarios)
-    .post(verificaJWT, addUsuario)
     .put(verificaJWT, updateUsuario)
+    .post(addUsuario)
 
 rotasUsuarios.route('/usuario/:codigo')
     .get(verificaJWT, getUsuarioPorCodigo)

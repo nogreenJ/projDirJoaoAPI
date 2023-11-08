@@ -12,10 +12,13 @@ const getUsuarios = async (request, response) => {
 }
 
 const addUsuario = async (request, response) => {
+    console.log("bbbbbbbbbbbbbbbbbb")
+    console.log(request.body)
     await addUsuarioDB(request.body)
         .then(data => response.status(200).json({
-            status: "success", message: "Usuario criado",
-            objeto: data
+            status: data.status,
+            message: data.msg,
+            objeto: data.obj
         }))
         .catch(err => response.status(400).json({
             status: 'error',
