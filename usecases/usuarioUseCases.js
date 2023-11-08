@@ -12,7 +12,9 @@ const getUsuariosDB = async () => {
 
 const addUsuarioDB = async (body) => {
     try {
+        console.log(body)
         const { nome, email, senha } = body;
+        console.log({ nome, email, senha })
         const results = await pool.query(`INSERT INTO usuarios (nome, email, senha) 
             VALUES ($1, $2, $3)
             returning codigo, nome, email`,
