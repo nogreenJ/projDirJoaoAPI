@@ -4,7 +4,7 @@ const Usuario = require('../entities/usuario');
 const getUsuariosDB = async () => {
     try {
         const { rows } = await pool.query(`SELECT * FROM usuarios ORDER BY codigo`);
-        return rows.map((usuario) => new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.tipo));
+        return rows.map((usuario) => new Usuario(usuario.codigo, usuario.email, usuario.nome));
     } catch (err) {
         throw "Erro: " + err;
     }
@@ -12,13 +12,13 @@ const getUsuariosDB = async () => {
 
 const addUsuarioDB = async (body) => {
     try {
-        const { nome, email, tipo, senha } = body;
-        const results = await pool.query(`INSERT INTO usuarios (nome, email, tipo, senha) 
-            VALUES ($1, $2, $3, $4)
-            returning codigo, nome, email, tipo`,
-            [nome, email, tipo, senha]);
+        const { nome, email, senha } = body;
+        const results = await pool.query(`INSERT INTO usuarios (nome, email, senha) 
+            VALUES ($1, $2, $3)
+            returning codigo, nome, email`,
+            [nome, email, senha]);
         const usuario = results.rows[0];
-        return new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.tipo);
+        return new Usuario(usuario.codigo, usuario.email, usuario.nome);
     } catch (err) {
         throw "Erro ao inserir a usuario: " + err;
     }
@@ -27,15 +27,15 @@ const addUsuarioDB = async (body) => {
 
 const updateUsuarioDB = async (body) => {
     try {
-        const { codigo, nome } = body;
-        const results = await pool.query(`UPDATE usuarios set nome = $2 where codigo = $1 
-        returning codigo, nome, tipo, email`,
-            [codigo, nome]);
+        const { codigo, nome, senha } = body;
+        const results = await pool.query(`UPDATE usuarios set nome = $2, senha = $3 where codigo = $1 
+        returning codigo, nome, email`,
+            [codigo, nome, senha]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser alterado`;
         }
         const usuario = results.rows[0];
-        return new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.tipo);
+        return new Usuario(usuario.codigo, usuario.email, usuario.nome);
     } catch (err) {
         throw "Erro ao alterar a usuario: " + err;
     }
@@ -63,7 +63,7 @@ const getUsuarioPorCodigoDB = async (codigo) => {
             throw "Nenhum registro encontrado com o código: " + codigo;
         } else {
             const usuario = results.rows[0];
-            return new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.tipo, usuario.senha);
+            return new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.senha);
         }
     } catch (err) {
         throw "Erro ao recuperar a usuario: " + err;
