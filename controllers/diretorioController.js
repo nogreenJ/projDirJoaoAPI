@@ -55,6 +55,15 @@ const getDiretorioPorCodigo = async (request, response) => {
         }));
 }
 
+const getDiretoriosArquivos = async (request, response) => {
+    const diretorios = await getDiretoriosArquivosDB((request.usuario.codigo))
+        .then(data => response.status(200).json(data))
+        .catch(err => response.status(400).json({
+            status: 'error',
+            message: 'Erro ao consultar os Diretorios: ' + err
+        }))
+}
+
 module.exports = {
-    getDiretorios, addDiretorio, updateDiretorio, deleteDiretorio, getDiretorioPorCodigo
+    getDiretorios, addDiretorio, updateDiretorio, deleteDiretorio, getDiretorioPorCodigo, getDiretoriosArquivos
 }
