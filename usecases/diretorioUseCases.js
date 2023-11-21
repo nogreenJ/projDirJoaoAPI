@@ -27,7 +27,7 @@ const getDiretoriosArquivosDB = async (codigo) => {
             rowsDir = await pool.query(`SELECT * FROM diretorios ORDER BY codigo`);
             rowsArq = await pool.query(`SELECT * FROM arquivos ORDER BY codigo`);
             rowsDir = rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : '')));
-            rowsArq = rows.map((arquivo) => new Arquivo((arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
+            rowsArq = rows.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
         }
         return rowsDir.concat(rowsArq);
     } catch (err) {
