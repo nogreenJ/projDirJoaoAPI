@@ -66,11 +66,12 @@ const updateDiretorioDB = async (body) => {
 
 const deleteDiretorioDB = async (codigo) => {
     try {
-        const results = await pool.query(`SELECT * FROM diretorios where codigo = $1 ORDER BY codigo`, [codigo]);
+        const results = await pool.query(`SELECT * FROM diretorios where codigo = $1`,[codigo]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser removido`;
         } else {
-            await pool.query(`UPDATE arquivos set parent = $2 where parent = $1`, [codigo, results[0].parent]).then(async () =>
+            const diretorio = results.rows[0];
+            await pool.query(`UPDATE arquivos set parent = $2 where parent = $1`, [codigo, diretorio.parent]).then(async () =>
                 await pool.query(`DELETE FROM diretorios where codigo = $1 `, [codigo])
             );
             return "Diretorio removido com sucesso";
