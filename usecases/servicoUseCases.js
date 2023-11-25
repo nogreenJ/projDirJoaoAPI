@@ -4,7 +4,7 @@ const Servico = require('../entities/servico');
 const getServicosDB = async (codigo) => {
     try {
         if (codigo) {
-            const { rows } = await pool.query(`SELECT * FROM servicos where dono = $1 ORDER BY codigo`, [codigo]);
+            const { rows } = await pool.query(`SELECT * FROM servicos where usuario = $1 ORDER BY codigo`, [codigo]);
             return rows.map((servico) => new Servico(servico.codigo, servico.nome, servico.endpoint, servico.key, servico.usuario));
         } else {
             const { rows } = await pool.query(`SELECT * FROM servicos ORDER BY codigo`);
