@@ -6,10 +6,8 @@ const getServicosDB = async (codigo) => {
         if (codigo) {
             const { rows } = await pool.query(`SELECT * FROM servicos where usuario = $1 ORDER BY codigo`, [codigo]);
             return rows.map((servico) => new Servico(servico.codigo, servico.nome, servico.endpoint, servico.key, servico.usuario));
-        } else {
-            const { rows } = await pool.query(`SELECT * FROM servicos ORDER BY codigo`);
-            return rows.map((servico) => new Servico(servico.codigo, servico.nome, servico.endpoint, servico.key, servico.usuario));
         }
+        throw new Error('Usuário não informado!');
     } catch (err) {
         throw "Erro: " + err;
     }
