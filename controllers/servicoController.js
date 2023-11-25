@@ -3,7 +3,7 @@ const { getServicosDB, addServicoDB,
     = require('../usecases/servicoUseCases')
 
 const getServicos = async (request, response) => {
-    await getServicosDB((request.servico.codigo))
+    await getServicosDB(parseInt(request.params.codigo))
         .then(data => response.status(200).json(data))
         .catch(err => response.status(400).json({
             status: 'error',
