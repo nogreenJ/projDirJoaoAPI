@@ -8,7 +8,7 @@ const getArquivosDB = async (codigo) => {
             return rows.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
         } else {
             const { rows } = await pool.query(`SELECT * FROM arquivos ORDER BY codigo`);
-            return rows.map((arquivo) => new Arquivo((arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
+            return rows.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
         }
     } catch (err) {
         throw "Erro: " + err;
