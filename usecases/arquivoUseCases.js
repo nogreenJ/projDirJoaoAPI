@@ -6,10 +6,8 @@ const getArquivosDB = async (codigo) => {
         if (codigo) {
             const { rows } = await pool.query(`SELECT * FROM arquivos where dono = $1 ORDER BY codigo`, [codigo]);
             return rows.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
-        } else {
-            const { rows } = await pool.query(`SELECT * FROM arquivos ORDER BY codigo`);
-            return rows.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
         }
+        throw new Error('Usuário não informado!');
     } catch (err) {
         throw "Erro: " + err;
     }
