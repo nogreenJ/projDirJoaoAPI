@@ -6,10 +6,8 @@ const getDiretoriosDB = async (codigo) => {
         if (codigo) {
             const { rows } = await pool.query(`SELECT * FROM diretorios where usuario = $1 ORDER BY codigo`, [codigo]);
             return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : '')));
-        } else {
-            const { rows } = await pool.query(`SELECT * FROM diretorios ORDER BY codigo`);
-            return rows.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : '')));
-        }
+        } 
+        throw new Error('Usuário não informado!');
     } catch (err) {
         throw "Erro: " + err;
     }
