@@ -1,6 +1,8 @@
 const { Router } = require('express');
 
 const { rotasDiretorios } = require('./rotasDiretorios');
+const { rotasArquivos } = require('./rotasArquivos');
+const { rotasServicos } = require('./rotasServicos');
 const { rotasUsuarios } = require('./rotasUsuarios');
 
 const { login } = require('../controllers/segurancaController');
@@ -14,6 +16,8 @@ rotas.route('/login').post(login);
 rotasUsuarios.route('/cadastro').post(addUsuario);
 
 rotas.use(rotasDiretorios);
+rotas.use(rotasArquivos);
+rotas.use(rotasServicos);
 rotas.use(rotasUsuarios);
 
 module.exports = rotas;
