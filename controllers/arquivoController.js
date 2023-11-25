@@ -3,7 +3,7 @@ const { getArquivosDB, getArquivosByUserDB, addArquivoDB,
     = require('../usecases/arquivoUseCases')
 
 const getArquivos = async (request, response) => {
-    await getArquivosDB((request.usuario.codigo))
+    await getArquivosDB(parseInt(request.usuario.codigo))
         .then(data => response.status(200).json(data))
         .catch(err => response.status(400).json({
             status: 'error',
