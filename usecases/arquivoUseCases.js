@@ -17,10 +17,10 @@ const getArquivosDB = async (codigo) => {
 
 const addArquivoDB = async (body) => {
     try {
-        const { nome, usuario, parent } = body;
-        const results = await pool.query(`INSERT INTO arquivos (codigo, nome, formato, parent, dono, criptografia, cid) 
-            VALUES ($1, $2, $3) returning codigo, nome, formato, parent, dono, criptografia, cid`,
-            [nome, usuario, (parent ? parent : null)]);
+        const { nome, formato, parent, dono, criptografia, cid } = body;
+        const results = await pool.query(`INSERT INTO arquivos (nome, formato, parent, dono, criptografia, cid) 
+            VALUES ($1, $2, $3, $4, $5, $6) returning codigo, nome, formato, parent, dono, criptografia, cid`,
+            [nome, formato, (parent ? parent : null), dono, criptografia, cid]);
         const arquivo = results.rows[0];
         return new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid);
     } catch (err) {
