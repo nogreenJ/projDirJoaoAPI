@@ -6,12 +6,14 @@ const { verificaJWT } = require('../controllers/segurancaController');
 const rotasServicos = new Router();
 
 rotasServicos.route('/servico')
-    .get(verificaJWT, getServicos)
     .post(verificaJWT, addServico)
     .put(verificaJWT, updateServico)
 
 rotasServicos.route('/servico/:codigo')
-    .get(verificaJWT, getServicoPorCodigo)
+    .get(verificaJWT, getServicos)
     .delete(verificaJWT, deleteServico)
+
+rotasServicos.route('/servico/edt/:codigo')
+    .get(verificaJWT, getServicoPorCodigo)
 
 module.exports = { rotasServicos };
