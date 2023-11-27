@@ -16,6 +16,7 @@ const getArquivosDB = async (codigo) => {
 const addArquivoDB = async (body) => {
     try {
         const { nome, formato, parent, dono, criptografia, cid } = body;
+        console.log(body)
         const results = await pool.query(`INSERT INTO arquivos (nome, formato, parent, dono, criptografia, cid) 
             VALUES ($1, $2, $3, $4, $5, $6) returning codigo, nome, formato, parent, dono, criptografia, cid`,
             [nome, formato, (parent ? parent : null), dono, (criptografia ? criptografia : null), cid]);
