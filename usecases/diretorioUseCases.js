@@ -1,5 +1,6 @@
 const { pool } = require('../config');
 const Diretorio = require('../entities/diretorio');
+const Arquivo = require('../entities/arquivo');
 
 const getDiretoriosDB = async (codigo) => {
     try {
