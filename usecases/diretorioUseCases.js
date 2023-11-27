@@ -20,10 +20,10 @@ const getDiretoriosArquivosDB = async (codigo) => {
         if (codigo) {
             const rowsDir = await getDiretoriosDB(codigo);
             const {rows} = await pool.query(`SELECT * FROM arquivos where dono = $1 ORDER BY codigo`, [codigo]);
-            rows = rows.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
+            const rowsArq = rows.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
             console.log(rowsDir)
-            console.log(rows)
-            return rowsDir.concat(rows);
+            console.log(rowsArq)
+            return rowsDir.concat(rowsArq);
         } else {
             throw new Error('Usuário não informado.');
         }
