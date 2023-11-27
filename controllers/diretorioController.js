@@ -3,8 +3,6 @@ const { getDiretoriosDB, getDiretoriosByUserDB, addDiretorioDB, getDiretoriosArq
     = require('../usecases/diretorioUseCases')
 
 const getDiretorios = async (request, response) => {
-    console.log("usr: ")
-    console.log((request.usuario.codigo))
     await getDiretoriosDB((request.usuario.codigo))
         .then(data => response.status(200).json(data))
         .catch(err => response.status(400).json({
@@ -58,8 +56,6 @@ const getDiretorioPorCodigo = async (request, response) => {
 }
 
 const getDiretoriosArquivos = async (request, response) => {
-    console.log("usr: ")
-    console.log((request.usuario.codigo))
     const diretorios = await getDiretoriosArquivosDB((request.usuario.codigo))
         .then(data => response.status(200).json(data))
         .catch(err => response.status(400).json({
