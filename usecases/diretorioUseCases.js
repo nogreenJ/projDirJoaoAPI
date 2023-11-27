@@ -18,15 +18,12 @@ const getDiretoriosArquivosDB = async (codigo) => {
         console.log("getDiretoriosArquivosDB")
         let rowsDir, rowsArq;
         if (codigo) {
-            rowsDir = await pool.query(`SELECT * FROM diretorios where usuario = $1 ORDER BY codigo`, [codigo]);
-            rowsArq = await pool.query(`SELECT * FROM arquivos where dono = $1 ORDER BY codigo`, [codigo]);
+            {rowsDir} = await pool.query(`SELECT * FROM diretorios where usuario = $1 ORDER BY codigo`, [codigo]);
+            {rowsArq} = await pool.query(`SELECT * FROM arquivos where dono = $1 ORDER BY codigo`, [codigo]);
             rowsDir = rowsDir.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : '')));
             rowsArq = rowsArq.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
         } else {
-            rowsDir = await pool.query(`SELECT * FROM diretorios ORDER BY codigo`);
-            rowsArq = await pool.query(`SELECT * FROM arquivos ORDER BY codigo`);
-            rowsDir = rowsDir.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : '')));
-            rowsArq = rowsArq.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
+            throw new Error('Usuário não informado.');
         }
         console.log(rowsDir)
         console.log(rowsArq)
