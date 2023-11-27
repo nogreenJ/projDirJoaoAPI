@@ -98,5 +98,5 @@ const getDiretorioPorCodigoDB = async (codigo) => {
 }
 
 module.exports = {
-    getDiretoriosDB, addDiretorioDB, updateDiretorioDB, deleteDiretorioDB, getDiretorioPorCodigoDB
+    getDiretoriosDB, addDiretorioDB, updateDiretorioDB, deleteDiretorioDB, getDiretorioPorCodigoDB, getDiretoriosArquivosDB
 }
