@@ -17,13 +17,12 @@ const getDiretoriosArquivosDB = async (codigo) => {
     try {
         console.log("getDiretoriosArquivosDB")
         if (codigo) {
-            const {rowsDir} = await pool.query(`SELECT * FROM diretorios where usuario = $1 ORDER BY codigo`, [codigo]);
-            const {rowsArq} = await pool.query(`SELECT * FROM arquivos where dono = $1 ORDER BY codigo`, [codigo]);
-            rowsDir = rowsDir.map((diretorio) => new Diretorio(diretorio.codigo, diretorio.nome, (diretorio.parent ? diretorio.parent : '')));
-            rowsArq = rowsArq.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
+            const rowsDir = await getDiretoriosDB(codigo);
+            const {rows} = await pool.query(`SELECT * FROM arquivos where dono = $1 ORDER BY codigo`, [codigo]);
+            rows = rows.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid));
             console.log(rowsDir)
-            console.log(rowsArq)
-            return rowsDir.concat(rowsArq);
+            console.log(rows)
+            return rowsDir.concat(rows);
         } else {
             throw new Error('Usuário não informado.');
         }
