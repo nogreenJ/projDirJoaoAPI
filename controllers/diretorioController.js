@@ -1,4 +1,4 @@
-const { getDiretoriosDB, getDiretoriosByUserDB, addDiretorioDB,
+const { getDiretoriosDB, getDiretoriosByUserDB, addDiretorioDB, getDiretoriosArquivosDB,
     updateDiretorioDB, deleteDiretorioDB, getDiretorioPorCodigoDB }
     = require('../usecases/diretorioUseCases')
 
