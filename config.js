@@ -13,11 +13,8 @@ if (isProduction) {
     })
 } else {
     pool = new Pool({
-        user: 'postgres',
-        host: 'localhost',
-        database: 'projjoao',
-        password: 'postgres',
-        port: 5432
+        connectionString: 'postgresql://postgres:123456@localhost:5432/siphon',
+        ssl: false
     })
 }
 

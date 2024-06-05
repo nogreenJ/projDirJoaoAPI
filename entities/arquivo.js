@@ -1,5 +1,5 @@
 class Arquivo {
-    constructor(codigo, nome, formato, parent, dono, criptografia, cid) {
+    constructor(codigo, nome, formato, parent, dono, criptografia, cid, servico) {
         this.codigo = codigo;
         this.nome = nome;
         this.formato = formato;
@@ -7,6 +7,7 @@ class Arquivo {
         this.dono = dono;
         this.criptografia = criptografia;
         this.cid = cid;
+        this.servico = servico;
     }
 }
 

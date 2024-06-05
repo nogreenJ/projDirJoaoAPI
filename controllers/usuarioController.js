@@ -12,8 +12,6 @@ const getUsuarios = async (request, response) => {
 }
 
 const addUsuario = async (request, response) => {
-    console.log("bbbbbbbbbbbbbbbbbb")
-    console.log(request.body)
     await addUsuarioDB(request.body)
         .then(data => response.status(200).json({
             status: data.status,

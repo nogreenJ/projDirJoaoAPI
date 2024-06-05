@@ -19,7 +19,7 @@ const addUsuarioDB = async (body) => {
         const results = await pool.query(`INSERT INTO usuarios (nome, email, senha) 
             VALUES ($1, $2, $3)
             returning codigo, nome, email`,
-            [nome, email, senha]);
+            [nome, email, senha])
         const usuario = results.rows[0];
         return { msg: "Usuário cadastrado", obj: new Usuario(usuario.codigo, usuario.email, usuario.nome), status: 'success' };
     } catch (err) {
@@ -30,12 +30,23 @@ const addUsuarioDB = async (body) => {
 
 const updateUsuarioDB = async (body) => {
     try {
-        const { codigo, nome, senha } = body;
-        const results = await pool.query(`UPDATE usuarios set nome = $2, senha = $3 where codigo = $1 
+        const { codigo, nome, senha, novaSenha } = body;
+        let updateFields = "";
+        if(nome){
+            updateFields += "nome = $2";
+        }
+        if(novaSenha){
+            if(updateFields) updateFields += ", ";
+            updateFields += "senha = $4";
+        }
+        if(!updateFields){
+            return getUsuarioPorCodigoDB(codigo);
+        }
+        const results = await pool.query(`UPDATE usuarios set ` + updateFields + ` where codigo = $1 and senha = $3 
         returning codigo, nome, email`,
-            [codigo, nome, senha]);
+            [codigo, nome, senha, novaSenha]);
         if (results.rowCount == 0) {
-            throw `Nenhum registro encontrado com o código ${codigo} para ser alterado`;
+            throw `Os dados informados estão incorretos`;
         }
         const usuario = results.rows[0];
         return new Usuario(usuario.codigo, usuario.email, usuario.nome);
@@ -66,7 +77,7 @@ const getUsuarioPorCodigoDB = async (codigo) => {
             throw "Nenhum registro encontrado com o código: " + codigo;
         } else {
             const usuario = results.rows[0];
-            return new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.senha);
+            return new Usuario(usuario.codigo, usuario.email, usuario.nome);
         }
     } catch (err) {
         throw "Erro ao recuperar o usuario: " + err;

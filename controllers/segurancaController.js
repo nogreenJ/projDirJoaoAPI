@@ -5,9 +5,11 @@ const jwt = require('jsonwebtoken');
 const login = async (request, response) => {
     await autenticaUsuarioDB(request.body)
         .then(usuario => {
-            const token = jwt.sign({ usuario }, process.env.SECRET, {
-                expiresIn: 3600 // expira em 5 minutos
-            })
+            const token = jwt.sign(
+                {usuario}, 
+                process.env.SECRET, 
+                {expiresIn: 3600}
+            )
             return response.json({ auth: true, token: token });
         })
         .catch(err => response.status(401).json({

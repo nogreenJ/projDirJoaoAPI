@@ -4,8 +4,7 @@ const Usuario = require('../entities/usuario')
 const autenticaUsuarioDB = async (body) => {
     try {
         const { email, senha } = body;
-        const results = await pool.query(`SELECT * FROM usuarios WHERE 
-        email = $1 AND senha = $2`, [email, senha]);
+        const results = await pool.query(`SELECT * FROM usuarios WHERE email = $1 AND senha = $2`, [email, senha]);
         if (results.rowCount == 0) {
             throw "Usuário ou senha inválidos";
         }
