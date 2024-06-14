@@ -10,7 +10,7 @@ const login = async (request, response) => {
                 process.env.SECRET, 
                 {expiresIn: 3600}
             )
-            return response.json({ auth: true, token: token });
+            return response.json({ auth: true, token: token, key: usuario.sc_key });
         })
         .catch(err => response.status(401).json({
             auth: false,

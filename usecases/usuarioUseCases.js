@@ -12,16 +12,17 @@ const getUsuariosDB = async () => {
 
 const addUsuarioDB = async (body) => {
     try {
-        const { nome, email, senha } = body;
-        if (!nome || !email || !senha) {
+        const { nome, email, senha, sc_key } = body;
+        if (!nome || !email || !senha || !sc_key) {
             return { msg: "ERRO: dados faltando", status: 'error' };
         }
-        const results = await pool.query(`INSERT INTO usuarios (nome, email, senha) 
-            VALUES ($1, $2, $3)
-            returning codigo, nome, email`,
-            [nome, email, senha])
+        const results = await pool.query(`INSERT INTO usuarios (nome, email, senha, sc_key) 
+            VALUES ($1, $2, $3, $4)
+            returning codigo, nome, email, sc_key`,
+            [nome, email, senha, sc_key])
+            .error(err => console.log(err))
         const usuario = results.rows[0];
-        return { msg: "Usuário cadastrado", obj: new Usuario(usuario.codigo, usuario.email, usuario.nome), status: 'success' };
+        return { msg: "Usuário cadastrado", obj: new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.sc_key), status: 'success' };
     } catch (err) {
         throw "Erro ao inserir o usuario: " + err;
     }
@@ -30,26 +31,37 @@ const addUsuarioDB = async (body) => {
 
 const updateUsuarioDB = async (body) => {
     try {
-        const { codigo, nome, senha, novaSenha } = body;
+        const { codigo, nome, senha, novaSenha, novaChave } = body;
         let updateFields = "";
+        let params = [codigo, senha];
         if(nome){
-            updateFields += "nome = $2";
+            updateFields += "nome = $3";
+            params.push(nome);
         }
         if(novaSenha){
             if(updateFields) updateFields += ", ";
             updateFields += "senha = $4";
+            params.push(novaSenha);
+        }
+        if(novaChave){
+            if(updateFields) updateFields += ", ";
+            updateFields += "sc_key = $5";
+            params.push(novaChave);
         }
         if(!updateFields){
             return getUsuarioPorCodigoDB(codigo);
         }
-        const results = await pool.query(`UPDATE usuarios set ` + updateFields + ` where codigo = $1 and senha = $3 
-        returning codigo, nome, email`,
-            [codigo, nome, senha, novaSenha]);
+        const results = await pool.query(`UPDATE usuarios set ` + updateFields + ` where codigo = $1 and senha = $2 
+        returning codigo, nome, email, sc_key`, params)
+            .err(e => {
+                console.log(e);
+                throw `Erro ao atualizar dados.`;
+            });
         if (results.rowCount == 0) {
             throw `Os dados informados estão incorretos`;
         }
         const usuario = results.rows[0];
-        return new Usuario(usuario.codigo, usuario.email, usuario.nome);
+        return new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.sc_key);
     } catch (err) {
         throw "Erro ao alterar a usuario: " + err;
     }

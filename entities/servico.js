@@ -1,11 +1,11 @@
 class Servico {
-    constructor(codigo, nome, endpoint, key, usuario, tipo) {
+    constructor(codigo, nome, key, usuario, tipo, sc_key) {
         this.codigo = codigo;
         this.nome = nome;
-        this.endpoint = endpoint;
         this.key = key;
         this.usuario = usuario;
         this.tipo = tipo;
+        this.sc_key = sc_key;
     }
 }
 

@@ -13,7 +13,8 @@ const autenticaUsuarioDB = async (body) => {
             usuario.codigo,
             usuario.email,
             usuario.nome,
-            usuario.senha);
+            usuario.sc_key,
+            ".");
     } catch (err) {
         throw err;
     }
