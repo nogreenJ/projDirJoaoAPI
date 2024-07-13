@@ -15,6 +15,7 @@ const getServicosDB = async (codigo) => {
 
 const addServicoDB = async (body) => {
     try {
+        console.log("add")
         const { nome, key, usuario, tipo, sc_key } = body;
         const results = await pool.query(`INSERT INTO servicos (nome, key, usuario, tipo, sc_key) 
             VALUES ($1, $2, $3, $4, $5) returning codigo, nome, key, usuario, tipo, sc_key`,
@@ -28,19 +29,15 @@ const addServicoDB = async (body) => {
 
 const updateServicoDB = async (body) => {
     try {
-        const { codigo, nome, parent, sc_key } = body;
+        const { codigo, nome, key } = body;
         let updateFields = "";
-        if(sc_key){
-            updateFields += ", sc_key = $3";
-        }
-        const results = await pool.query(`UPDATE servicos set nome = $2 ` + updateFields + ` where codigo = $1 
-        returning codigo, nome, key, usuario, tipo, sc_key`,
-            [codigo, nome, sc_key]);
+        const results = await pool.query(`UPDATE servicos set nome = $2, key = $3 where codigo = $1 
+        returning codigo, nome, key, usuario, tipo`, [codigo, nome, key]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser alterado`;
         }
         const servico = results.rows[0];
-        return new Servico(servico.codigo, servico.nome, servico.key, servico.usuario, servico.sc_key);
+        return new Servico(servico.codigo, servico.nome, servico.key, servico.usuario);
     } catch (err) {
         throw "Erro ao alterar o servico: " + err;
     }

@@ -16,15 +16,32 @@ const addUsuarioDB = async (body) => {
         if (!nome || !email || !senha || !sc_key) {
             return { msg: "ERRO: dados faltando", status: 'error' };
         }
+        const notvalid = await getUsuarioPorEmail(email);
+        if(notvalid){
+            return { msg: "Email já cadastrado no sistema.", status: 'warning' };
+        }
         const results = await pool.query(`INSERT INTO usuarios (nome, email, senha, sc_key) 
             VALUES ($1, $2, $3, $4)
             returning codigo, nome, email, sc_key`,
-            [nome, email, senha, sc_key])
-            .error(err => console.log(err))
+            [nome, email, senha, sc_key]);
         const usuario = results.rows[0];
         return { msg: "Usuário cadastrado", obj: new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.sc_key), status: 'success' };
     } catch (err) {
         throw "Erro ao inserir o usuario: " + err;
+    }
+}
+
+const getUsuarioPorEmail = async (email) => {
+    try {
+        const results = await pool.query(`SELECT * FROM usuarios where email = $1`, [email]);
+        if (results.rowCount == 0) {
+            return null;
+        } else {
+            const usuario = results.rows[0];
+            return new Usuario(usuario.codigo, usuario.email, usuario.nome);
+        }
+    } catch (err) {
+        throw "Erro ao consultar o usuario: " + err;
     }
 }
 

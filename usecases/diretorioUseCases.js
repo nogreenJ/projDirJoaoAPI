@@ -65,13 +65,22 @@ const deleteDiretorioDB = async (codigo) => {
             throw `Nenhum registro encontrado com o código ${codigo} para ser removido`;
         } else {
             const diretorio = results.rows[0];
-            await pool.query(`UPDATE arquivos set parent = $2 where parent = $1`, [codigo, diretorio.parent]).then(async () =>
+            await updateDiretorioFilhosOnDelete(codigo, diretorio.parent).then(async () =>
                 await pool.query(`DELETE FROM diretorios where codigo = $1 `, [codigo])
             );
             return "Diretorio removido com sucesso";
         }
     } catch (err) {
         throw "Erro ao remover a diretorio: " + err;
+    }
+}
+
+const updateDiretorioFilhosOnDelete = async (oldParent, newParent) => {
+    try {
+        await pool.query(`UPDATE diretorios set parent = $2 where parent = $1`, [oldParent, newParent]);
+        await pool.query(`UPDATE arquivos set parent = $2 where parent = $1`, [oldParent, newParent]);
+    } catch (err) {
+        throw "Erro ao alterar o diretorio: " + err;
     }
 }
 
