@@ -71,7 +71,6 @@ const updateUsuarioDB = async (body) => {
         const results = await pool.query(`UPDATE usuarios set ` + updateFields + ` where codigo = $1 and senha = $2 
         returning codigo, nome, email, sc_key`, params)
             .err(e => {
-                console.log(e);
                 throw `Erro ao atualizar dados.`;
             });
         if (results.rowCount == 0) {

@@ -15,7 +15,6 @@ const getServicosDB = async (codigo) => {
 
 const addServicoDB = async (body) => {
     try {
-        console.log("add")
         const { nome, key, usuario, tipo, sc_key } = body;
         const results = await pool.query(`INSERT INTO servicos (nome, key, usuario, tipo, sc_key) 
             VALUES ($1, $2, $3, $4, $5) returning codigo, nome, key, usuario, tipo, sc_key`,
