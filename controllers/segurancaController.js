@@ -18,14 +18,12 @@ const login = async (request, response) => {
         }));
 }
 
-// verificação do token
 function verificaJWT(request, response, next) {
     const token = request.headers['authorization'];
     if (!token) return response.status(401).json({
         auth: false,
         message: "Erro ao autenticar o token"
     });
-    // vericando o token
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
         if (err) {
             response.status(401).json({
@@ -33,7 +31,6 @@ function verificaJWT(request, response, next) {
                 message: "Erro ao autenticar o token"
             })
         } else {
-            // se token é valido salva no request para uso posterior
             request.usuario = decoded.usuario;
         }
         next();

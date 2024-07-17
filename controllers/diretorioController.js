@@ -14,7 +14,7 @@ const getDiretorios = async (request, response) => {
 const addDiretorio = async (request, response) => {
     await addDiretorioDB(request.body)
         .then(data => response.status(200).json({
-            status: "success", message: "Diretorio criado",
+            status: "success", message: "Diretório criado",
             objeto: data
         }))
         .catch(err => response.status(400).json({
