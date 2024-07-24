@@ -21,8 +21,7 @@ const addUsuarioDB = async (body) => {
             return { msg: "Email já cadastrado no sistema.", status: 'warning' };
         }
         const results = await pool.query(`INSERT INTO usuarios (nome, email, senha, sc_key) 
-            VALUES ($1, $2, $3, $4)
-            returning codigo, nome, email, sc_key`,
+            VALUES ($1, $2, $3, $4) returning codigo, nome, email, sc_key`,
             [nome, email, senha, sc_key]);
         const usuario = results.rows[0];
         return { msg: "Usuário cadastrado", obj: new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.sc_key), status: 'success' };
@@ -48,22 +47,22 @@ const getUsuarioPorEmail = async (email) => {
 
 const updateUsuarioDB = async (body) => {
     try {
-        const { codigo, nome, senha, novaSenha, novaChave } = body;
-        let updateFields = "";
+        const { codigo, nome, senha, novaSenha, sc_key } = body;
+        let updateFields = null;
         let params = [codigo, senha];
         if(nome){
-            updateFields += "nome = $3";
+            updateFields = "nome = $3";
             params.push(nome);
         }
         if(novaSenha){
-            if(updateFields) updateFields += ", ";
-            updateFields += "senha = $4";
+            if(updateFields) {
+                updateFields += ", ";
+            } else {
+                updateFields = "";
+            }
+            updateFields += "senha = $" + (params.length+1) +", sc_key = $" + (params.length+2);
             params.push(novaSenha);
-        }
-        if(novaChave){
-            if(updateFields) updateFields += ", ";
-            updateFields += "sc_key = $5";
-            params.push(novaChave);
+            params.push(sc_key);
         }
         if(!updateFields){
             return getUsuarioPorCodigoDB(codigo);

@@ -18,8 +18,16 @@ const getDiretoriosArquivosDB = async (codigo) => {
     try {
         if (codigo) {
             const rowsDir = await getDiretoriosDB(codigo);
-            const {rows} = await pool.query(`SELECT * FROM arquivos where dono = $1 ORDER BY codigo`, [codigo]);
-            const rowsArq = rows.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid, arquivo.servico));
+            const {rows} = await pool.query(
+                `SELECT arq.codigo, arq.nome, arq.formato, arq.parent,
+                arq.dono, arq.cid, arq.servico, serv.tipo FROM arquivos arq left join servicos serv on 
+                arq.servico = serv.codigo where arq.dono = $1 ORDER BY arq.codigo`, [codigo]);
+            const rowsArq = rows.map(
+                (arquivo) => 
+                    new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, 
+                        (arquivo.parent ? arquivo.parent : ''), 
+                        arquivo.dono, arquivo.cid, 
+                        arquivo.servico, arquivo.tipo));
             return rowsDir.concat(rowsArq);
         } else {
             throw new Error('Usuário não informado.');

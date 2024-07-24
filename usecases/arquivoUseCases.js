@@ -5,7 +5,7 @@ const getArquivosDB = async (codigo) => {
     try {
         if (codigo) {
             const { rows } = await pool.query(`SELECT * FROM arquivos where dono = $1 ORDER BY codigo`, [codigo]);
-            return rows.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid, arquivo.servico));
+            return rows.map((arquivo) => new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.cid, arquivo.servico));
         }
         throw new Error('Usuário não informado!');
     } catch (err) {
@@ -15,12 +15,12 @@ const getArquivosDB = async (codigo) => {
 
 const addArquivoDB = async (body) => {
     try {
-        const { nome, formato, parent, dono, criptografia, cid, servico } = body;
-        const results = await pool.query(`INSERT INTO arquivos (nome, formato, parent, dono, criptografia, cid, servico) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7) returning codigo, nome, formato, parent, dono, criptografia, cid, servico`,
-            [nome, formato, (parent ? parent : null), dono, (criptografia ? criptografia : null), cid, servico]);
+        const { nome, formato, parent, dono, cid, servico } = body;
+        const results = await pool.query(`INSERT INTO arquivos (nome, formato, parent, dono, cid, servico) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7) returning codigo, nome, formato, parent, dono, cid, servico`,
+            [nome, formato, (parent ? parent : null), dono, cid, servico]);
         const arquivo = results.rows[0];
-        return new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : 'null'), arquivo.dono, 'null', arquivo.cid, arquivo.servico);
+        return new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : 'null'), arquivo.dono, arquivo.cid, arquivo.servico);
     } catch (err) {
         throw "Erro ao inserir o arquivo: " + err;
     }
@@ -30,13 +30,13 @@ const updateArquivoDB = async (body) => {
     try {
         const { codigo, nome, parent } = body;
         const results = await pool.query(`UPDATE arquivos set nome = $2, parent = $3 where codigo = $1 
-        returning codigo, nome, formato, parent, dono, criptografia, cid, servico`,
+        returning codigo, nome, formato, parent, dono, cid, servico`,
             [codigo, nome, (parent ? parent : null)]);
         if (results.rowCount == 0) {
             throw `Nenhum registro encontrado com o código ${codigo} para ser alterado`;
         }
         const arquivo = results.rows[0];
-        return new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid, arquivo.servico);
+        return new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.cid, arquivo.servico);
     } catch (err) {
         throw "Erro ao alterar o arquivo: " + err;
     }
@@ -63,7 +63,7 @@ const getArquivoPorCodigoDB = async (codigo) => {
             throw "Nenhum registro encontrado com o código: " + codigo;
         } else {
             const arquivo = results.rows[0];
-            return new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.criptografia, arquivo.cid, arquivo.servico);
+            return new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : ''), arquivo.dono, arquivo.cid, arquivo.servico);
         }
     } catch (err) {
         throw "Erro ao recuperar o arquivo: " + err;
