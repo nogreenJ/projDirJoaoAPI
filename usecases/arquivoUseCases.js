@@ -17,7 +17,7 @@ const addArquivoDB = async (body) => {
     try {
         const { nome, formato, parent, dono, cid, servico } = body;
         const results = await pool.query(`INSERT INTO arquivos (nome, formato, parent, dono, cid, servico) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7) returning codigo, nome, formato, parent, dono, cid, servico`,
+            VALUES ($1, $2, $3, $4, $5, $6) returning codigo, nome, formato, parent, dono, cid, servico`,
             [nome, formato, (parent ? parent : null), dono, cid, servico]);
         const arquivo = results.rows[0];
         return new Arquivo(arquivo.codigo, arquivo.nome, arquivo.formato, (arquivo.parent ? arquivo.parent : 'null'), arquivo.dono, arquivo.cid, arquivo.servico);
