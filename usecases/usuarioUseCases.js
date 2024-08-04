@@ -68,12 +68,9 @@ const updateUsuarioDB = async (body) => {
             return getUsuarioPorCodigoDB(codigo);
         }
         const results = await pool.query(`UPDATE usuarios set ` + updateFields + ` where codigo = $1 and senha = $2 
-        returning codigo, nome, email, sc_key`, params)
-            .err(e => {
-                throw `Erro ao atualizar dados.`;
-            });
+        returning codigo, nome, email, sc_key`, params);
         if (results.rowCount == 0) {
-            throw `Os dados informados estão incorretos`;
+            throw `A senha informada está incorreta`;
         }
         const usuario = results.rows[0];
         return new Usuario(usuario.codigo, usuario.email, usuario.nome, usuario.sc_key);
