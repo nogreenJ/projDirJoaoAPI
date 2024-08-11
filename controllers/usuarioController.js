@@ -5,10 +5,7 @@ const { getUsuariosDB, addUsuarioDB,
 const getUsuarios = async (request, response) => {
     await getUsuariosDB()
         .then(data => response.status(200).json(data))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: 'Erro ao consultar as Usuarios: ' + err
-        }))
+        .catch(err => response.status(400));
 }
 
 const addUsuario = async (request, response) => {
@@ -18,10 +15,7 @@ const addUsuario = async (request, response) => {
             message: data.msg,
             objeto: data.obj
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const updateUsuario = async (request, response) => {
@@ -30,10 +24,7 @@ const updateUsuario = async (request, response) => {
             status: "success", message: "Usuario alterado",
             objeto: data
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const deleteUsuario = async (request, response) => {
@@ -41,19 +32,13 @@ const deleteUsuario = async (request, response) => {
         .then(data => response.status(200).json({
             status: "success", message: data
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const getUsuarioPorCodigo = async (request, response) => {
     await getUsuarioPorCodigoDB(parseInt(request.params.codigo))
         .then(data => response.status(200).json(data))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 module.exports = {

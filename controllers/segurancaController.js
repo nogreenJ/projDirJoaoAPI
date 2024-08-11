@@ -12,18 +12,12 @@ const login = async (request, response) => {
             )
             return response.json({ auth: true, token: token, key: usuario.sc_key });
         })
-        .catch(err => response.status(401).json({
-            auth: false,
-            message: err
-        }));
+        .catch(err => response.status(401));
 }
 
 function verificaJWT(request, response, next) {
     const token = request.headers['authorization'];
-    if (!token) return response.status(401).json({
-        auth: false,
-        message: "Erro ao autenticar o token"
-    });
+    if (!token) return response.status(401);
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
         if (err) {
             response.status(401).json({

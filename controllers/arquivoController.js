@@ -5,10 +5,7 @@ const { getArquivosDB, getArquivosByUserDB, addArquivoDB,
 const getArquivos = async (request, response) => {
     await getArquivosDB(parseInt(request.usuario.codigo))
         .then(data => response.status(200).json(data))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: 'Erro ao consultar os Arquivos: ' + err
-        }))
+        .catch(err => response.status(400));
 }
 
 const addArquivo = async (request, response) => {
@@ -17,10 +14,7 @@ const addArquivo = async (request, response) => {
             status: "success", message: "Arquivo criado",
             objeto: data
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const updateArquivo = async (request, response) => {
@@ -29,10 +23,7 @@ const updateArquivo = async (request, response) => {
             status: "success", message: "Arquivo alterado",
             objeto: data
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const deleteArquivo = async (request, response) => {
@@ -40,19 +31,13 @@ const deleteArquivo = async (request, response) => {
         .then(data => response.status(200).json({
             status: "success", message: data
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const getArquivoPorCodigo = async (request, response) => {
     await getArquivoPorCodigoDB(parseInt(request.params.codigo))
         .then(data => response.status(200).json(data))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 module.exports = {

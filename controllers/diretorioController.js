@@ -5,10 +5,7 @@ const { getDiretoriosDB, getDiretoriosByUserDB, addDiretorioDB, getDiretoriosArq
 const getDiretorios = async (request, response) => {
     await getDiretoriosDB((request.usuario.codigo))
         .then(data => response.status(200).json(data))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: 'Erro ao consultar os Diretorios: ' + err
-        }))
+        .catch(err => response.status(400));
 }
 
 const addDiretorio = async (request, response) => {
@@ -17,10 +14,7 @@ const addDiretorio = async (request, response) => {
             status: "success", message: "Diretório criado",
             objeto: data
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const updateDiretorio = async (request, response) => {
@@ -29,10 +23,7 @@ const updateDiretorio = async (request, response) => {
             status: "success", message: "Diretorio alterado",
             objeto: data
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const deleteDiretorio = async (request, response) => {
@@ -40,28 +31,26 @@ const deleteDiretorio = async (request, response) => {
         .then(data => response.status(200).json({
             status: "success", message: data
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const getDiretorioPorCodigo = async (request, response) => {
     await getDiretorioPorCodigoDB(parseInt(request.params.codigo))
         .then(data => response.status(200).json(data))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const getDiretoriosArquivos = async (request, response) => {
-    const diretorios = await getDiretoriosArquivosDB((request.usuario.codigo))
-        .then(data => response.status(200).json(data))
-        .catch(err => response.status(400).json({
+    if(!request.usuario){
+        response.status(400).json({
             status: 'error',
-            message: 'Erro ao consultar os Diretorios: ' + err
-        }))
+            message: 'Sem usuário informado'
+        })
+    } else {
+        const diretorios = await getDiretoriosArquivosDB((request.usuario.codigo))
+            .then(data => response.status(200).json(data))
+            .catch(err => response.status(400));
+    }
 }
 
 module.exports = {

@@ -5,10 +5,7 @@ const { getServicosDB, addServicoDB,
 const getServicos = async (request, response) => {
     await getServicosDB(parseInt(request.usuario.codigo))
         .then(data => response.status(200).json(data))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: 'Erro ao consultar os Servicos: ' + err
-        }))
+        .catch(err => response.status(400));
 }
 
 const addServico = async (request, response) => {
@@ -18,10 +15,7 @@ const addServico = async (request, response) => {
             message: data.msg,
             objeto: data.obj
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const updateServico = async (request, response) => {
@@ -30,10 +24,7 @@ const updateServico = async (request, response) => {
             status: "success", message: "Servico alterado",
             objeto: data
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const deleteServico = async (request, response) => {
@@ -41,19 +32,13 @@ const deleteServico = async (request, response) => {
         .then(data => response.status(200).json({
             status: "success", message: data
         }))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 const getServicoPorCodigo = async (request, response) => {
     await getServicoPorCodigoDB(parseInt(request.params.codigo))
         .then(data => response.status(200).json(data))
-        .catch(err => response.status(400).json({
-            status: 'error',
-            message: err
-        }));
+        .catch(err => response.status(400));
 }
 
 module.exports = {
